@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sklep internetowy</title>
+  <link rel="stylesheet" type="text/css" href="/css/mainPage.css">
+</head>
+
+<body>
+  <div class="columnLogoCategories">
+    <div id="logo">
+      <img src="/images/logo.png" alt="logo">
+    </div>
+  </div>
+  <div class="ColumnShopLogin">
+    <div class="ToolBar">
+      <div class="MainButtons">
+        <button class="messagesButton" onclick="window.location.href='/messages'">Wiadomości</button>
+        <button class="ordersButton" onclick="window.location.href='/orders'">Zamówienia</button>
+        <button class="postButton" onclick="window.location.href='/post'">Dodaj nowy przedmiot</button>
+      </div>
+      <div class="UserMenu">
+        <button class="loginButton" onclick="window.location.href='/login'">Zaloguj</button>
+        <button class="logoutButton" onclick="window.location.href='/logout'">Wyloguj</button>
+      </div>
+      <div class="SearchBar">
+        <form action="/search" method="POST">
+          <input type="text" name="search" placeholder="Wyszukaj..." class="SearchBarInput">
+          <button type="submit" class="SearchBarButton">Szukaj</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
