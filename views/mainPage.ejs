@@ -45,7 +45,7 @@
       </div>
     </div>
     <% shopItems.forEach(shopItem => { %>
-          <div class="item" onclick="itemClicked(<%= shopItem.id %>)">
+          <div class="item" onclick="itemClicked( <%=shopItem.id%> )">
             <img src="/images/<%= shopItem.image %>" class="itemPhoto">
             <h1 class="itemName"><%= shopItem.name %></h1>
             <h2 class="itemPrice"><%= shopItem.price %></h2>
