@@ -1,13 +1,11 @@
 const {Client} = require('pg');
 class ShopItem{
     static id = 0;
-    constructor(itemName, itemPrice, itemDescription, itemImage, itemCategory, itemSellerID){
+    constructor(itemName, itemPrice, itemDescription, itemImage){
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemDescription = itemDescription;
         this.itemImage = itemImage;
-        this.itemCategory = itemCategory;
-        this.itemSellerID = itemSellerID;
         ShopItem.id = ShopItem.id + 1;
         this.id = ShopItem.id;
         const client = new Client({
@@ -18,7 +16,7 @@ class ShopItem{
             port: 5432
         });
         client.connect();
-        client.query('INSERT INTO "Items"(id, name, price, description, image, category, seller_id) VALUES($1, $2, $3, $4, $5, $6, $7)', [this.id, this.itemName, this.itemPrice, this.itemDescription, this.itemImage, this.itemCategory, this.itemSellerID]).finally(() => client.end());
+        client.query('INSERT INTO "Items"(id, name, price, description, image) VALUES($1, $2, $3, $4, $5, $6, $7)', [this.id, this.itemName, this.itemPrice, this.itemDescription, this.itemImage]).finally(() => client.end());
     }
     get itemName(){
         return this._itemName;
@@ -31,12 +29,6 @@ class ShopItem{
     }
     get itemImage(){
         return this._itemImage;
-    }
-    get itemCategory(){
-        return this._itemCategory;
-    }
-    get itemSellerID(){
-        return this._itemSellerID;
     }
     get id(){
         return this._id;
@@ -52,12 +44,6 @@ class ShopItem{
     }
     set itemImage(itemImage){
         this._itemImage = itemImage;
-    }
-    set itemCategory(itemCategory){
-        this._itemCategory = itemCategory;
-    }
-    set itemSellerID(itemSellerID){
-        this._itemSellerID = itemSellerID;
     }
     set id(id){
         this._id = id;

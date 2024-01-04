@@ -1,0 +1,14 @@
+{
+    "name": "projektkoncowyweppo",
+    "version": "1.0.0",
+    "description": "Projekt koncowy z przedmiotu weppo - sklep internetowy",
+    "main": "mainapp.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "author": "Dominik Szczepaniak",
+    "license": "ISC",
+    "dependencies": {
+        "express-session": "^1.17.3"
+    }
+}

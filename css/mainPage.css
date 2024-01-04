@@ -6,22 +6,24 @@
     width:80%;
     float:right;
 }
-#logo{
+.MainPage{
     height: 100px;
+    width:100%;
+    background-color: #ffffff;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    cursor:pointer; 
+    padding: 10px 20px;
 }
 .ToolBar{
     width: 100%;
     height: 100px;
 }
-.MainButtons{
-    width: 65%;
-    height: 40%;
-    float: left;
-
-}
 
 .UserMenu{
-    width: 34%;
+    width: 100%;
     height: 30px;
     font-size: 100%;
     text-align: center;
@@ -31,8 +33,11 @@
 }
 
 .loginButton,
-.logoutButton{
-    width: 20%;
+.logoutButton,
+.registerButton,
+.postButton,
+.ordersButton{
+    width: 15%;
     text-align: center;
     cursor: pointer;
     box-sizing: border-box; 
@@ -40,23 +45,19 @@
     font-size: 100%;
     color: rgb(99, 156, 13);
     border-radius: 15px;
-}
-
-.messagesButton,
-.ordersButton,
-.postButton {
-    width: 20%;
-    text-align: center;
-    cursor: pointer;
-    box-sizing: border-box; 
-    height: 100%;
-    font-size: 100%;
-    color: rgb(99, 156, 13);
-    border-radius: 15px;
+    float: right;
 }
 .postButton{
-    width: 30%;
+    width: 15%;
+    float:left;
 }
+.ordersButton{
+    width: 15%;
+    float:left;
+}
+
+
+
 
 .SearchBar{
     height:40px;
@@ -132,4 +133,11 @@
 }
 .itemDescription{
     grid-area: description;
+}
+.wrongPassword{
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+
 }

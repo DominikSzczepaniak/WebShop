@@ -10,30 +10,23 @@
 
 <body>
   <div class="columnLogoCategories">
-    <div id="logo">
-      <img src="/images/logo.png" alt="logo">
-    </div>
-    <div>
-      <h1>Kategoria</h1>
-        <% console.log(categories); %>
-        <% categories.forEach(category => { %>
-            <p class="categoryName"><%= category%></p>
-        <% }); %>
-        <!-- TODO: Generuj mainPage.ejs z shopItems tylko z tej kategorii -->
-      
-    </div>
+    <button class="MainPage">Strona główna</button>
   </div>
   <div class="ColumnShopLogin">
     <div class="ToolBar">
       <div>
-        <div class="MainButtons">
-          <button class="messagesButton" onclick="window.location.href='/messages'">Wiadomości</button>
-          <button class="ordersButton" onclick="window.location.href='/orders'">Zamówienia</button>
-          <button class="postButton" onclick="window.location.href='/post'">Dodaj nowy przedmiot</button>
-        </div>
         <div class="UserMenu">
-          <button class="loginButton" onclick="window.location.href='/login'">Zaloguj</button>
-          <button class="logoutButton" onclick="window.location.href='/logout'">Wyloguj</button>
+          <% if (typeof username != "undefined") { %>
+            <button class="logoutButton" onclick="window.location.href='/logout'">Wyloguj</button>
+            <%if(type == "admin"){ %>
+              <button class="ordersButton" onclick="window.location.href='/orders'">Zamówienia</button>
+              <button class="postButton" onclick="window.location.href='/post'">Dodaj nowy przedmiot</button>
+            <%} %>
+          <% } else { %>
+            <button class="registerButton" onclick="window.location.href='/register'">Zarejestruj</button>
+            <button class="loginButton" onclick="window.location.href='/login'">Zaloguj</button>
+          <% } %>
+          
         </div>
       </div>
       <div>
@@ -63,6 +56,10 @@
   function itemClicked(id){
     console.log(id);
   }
+  const mainPageButton = document.querySelector(".MainPage");
+  mainPageButton.addEventListener("click", (e) => {
+    window.location.href = "/";
+  });
 </script>
 
 </html>
