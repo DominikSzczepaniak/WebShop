@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklep internetowy</title>
+    <link rel="stylesheet" type="text/css" href="/css/adminPanelPage.css">
+</head>
+
+<body>
+    <div class="columnLogoCategories">
+        <button class="MainPage">Strona główna</button>
+    </div>
+    <div class="wrapper">
+        <div class="buttonWrapper">
+            <button class="tab-button active" style="border-top-left-radius: 10px;" data-id="item">Przedmioty</button>
+            <button class="tab-button" data-id="order">Zamówienia</button>
+            <button class="tab-button" style="border-top-right-radius: 10px;" data-id="user">Użytkownicy</button>
+        </div>
+        <div class="contentWrapper">
+            <div class="content active" id="item">
+                <button class="addItemButton" id="item">Dodaj nowy przedmiot</button>
+                <!-- ukryte menu tworzenia przedmiotow, jesli kliknie sie guzik "Dodaj nowy przedmiot", to menu sie pojawi (w javascript uzyjemy setVisible)-->
+                <!-- autogeneracja przedmiotow z bazy danych z guzikiem edytuj i usun po prawej stronie-->
+            </div>
+            <div class="content" id="order">
+                <!-- autogeneracja zamowien z bazy danych i guzikow po prawej - przejdz do nastepnego etapu (wyslane - zakonczone), drugi guzik to usuniecie zamowienia -->
+            </div>
+            <div class="content" id="user">
+                <% users.forEach(user => { %>
+                <div id="userDiv">
+                    <h1 id="userName"><%= user.username %></h1>
+                    <h2 id="userEmail"><%= user.email %></h2>
+                    <button id="userDeleteButton" onclick="deleteUserConfirm('/adminPanel/deleteUser/<%= user.username %>')">Usuń</button>
+                </div>
+                <% }); %>
+            </div>  
+        </div>
+    </div>
+</body>
+<script>
+    function deleteUserConfirm(deleteUrl){
+        var confirmed = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
+        if(confirmed){
+            window.location.href = deleteUrl;
+        }
+    }
+
+    const tabs = document.querySelector(".wrapper");
+    const tabButton = document.querySelectorAll(".tab-button");
+    const contents = document.querySelectorAll(".content");
+
+    tabs.onclick = e => {
+        const id = e.target.dataset.id;
+        if (id) {
+            tabButton.forEach(btn => {
+                btn.classList.remove("active");
+            });
+            e.target.classList.add("active");
+
+            contents.forEach(content => {
+                content.classList.remove("active");
+            });
+            const element = document.getElementById(id);
+            element.classList.add("active");
+        }
+    }
+
+    const mainPageButton = document.querySelector(".MainPage");
+    mainPageButton.addEventListener("click", (e) => {
+        window.location.href = "/";
+    });
+</script>
+
+</html>

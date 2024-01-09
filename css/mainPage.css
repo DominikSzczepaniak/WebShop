@@ -35,8 +35,9 @@
 .loginButton,
 .logoutButton,
 .registerButton,
-.postButton,
-.ordersButton{
+.adminButton,
+.userOrdersButton,
+.orderButton{
     width: 15%;
     text-align: center;
     cursor: pointer;
@@ -47,12 +48,12 @@
     border-radius: 15px;
     float: right;
 }
-.postButton{
+.adminButton{
     width: 15%;
     float:left;
 }
-.ordersButton{
-    width: 15%;
+.userOrdersButton{
+    width: 20%;
     float:left;
 }
 

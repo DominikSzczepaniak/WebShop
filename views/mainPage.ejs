@@ -18,9 +18,9 @@
         <div class="UserMenu">
           <% if (typeof username != "undefined") { %>
             <button class="logoutButton" onclick="window.location.href='/logout'">Wyloguj</button>
+            <button class="orderButton" onclick="window.location.href='/orders'">Zamówienia</button>
             <%if(type == "admin"){ %>
-              <button class="ordersButton" onclick="window.location.href='/orders'">Zamówienia</button>
-              <button class="postButton" onclick="window.location.href='/post'">Dodaj nowy przedmiot</button>
+              <button class="adminButton" onclick="window.location.href='/adminPanel'">Panel administratora</button>
             <%} %>
           <% } else { %>
             <button class="registerButton" onclick="window.location.href='/register'">Zarejestruj</button>

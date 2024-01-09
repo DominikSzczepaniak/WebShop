@@ -34,11 +34,22 @@ class Database{
         else
             return [result.rows[0].id, result.rows[0].type];
     }
+    
     async registerUser(username, password, type){
         const check_exist = await this.client.query('SELECT * FROM "ShopUser" WHERE username = $1', [username]);
         if(check_exist.rows.length > 0)
             return null;
         const result = await this.client.query('INSERT INTO "ShopUser"(username, password, type) VALUES($1, $2, $3)', [username, password, type]);
+        return result;
+    }
+
+    async getUsers(){
+        const result = await this.client.query('SELECT * FROM "ShopUser" WHERE type = $1', ["user"]);
+        return result.rows;
+    }
+
+    async deleteUser(username){
+        const result = await this.client.query('DELETE FROM "ShopUser" WHERE username = $1', [username]);
         return result;
     }
 }

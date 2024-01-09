@@ -8,9 +8,9 @@ const {ShopItem} = require('./ShopItemClass');
 const {Database} = require('./DatabaseClass');
 const db = new Database();
 
-async function getShopItemsFunction(){
-  const shopItems = await db.getShopItems();
-  return shopItems;
+async function getUsersFunction(){
+  const users = await db.getUsers();
+  return users;
 }
 
 async function main(){
@@ -27,7 +27,7 @@ async function main(){
 
   app.get('/', (req, res) => {
     req.session.error = "";
-    getShopItemsFunction().then((shopItems) => {
+    db.getShopItems().then((shopItems) => {
       res.render('mainPage', {shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type});
     })
   });
@@ -45,7 +45,6 @@ async function main(){
       }
     }
   })
-
 
   app.post('/login', async (req, res) => { 
     const username = req.body.username;
@@ -66,6 +65,7 @@ async function main(){
       res.redirect('/');
     }
   });
+
 
   app.get('/register', (req, res) => {
     if(req.session.isAuth){
@@ -95,9 +95,56 @@ async function main(){
     }
   });
 
+
   app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
+  });
+
+//TODO:
+//search bar logic (search by name or description use KMP algorithm on names and descriptions from database)
+//add to cart (do cart on the left side as a list and checkout button at the top next to a price)
+//so something like:
+//cart icon         price  checkout button
+//item1             price  remove button
+//item2             price  remove button
+//and so on
+//checkout subpage
+//adminPanel logic
+//login i rejestracja na jednej podstronie i w ladniejszym wykonaniu estetycznym (zrob zakladki na logowanie i rejestracje na tej podstronie)
+
+//zmiana bazy danych ShopUser - kluczem ma byc userName
+
+
+  app.get('/orders', (req, res) =>{ //TODO
+    if(req.session.isAuth && req.session.type == "admin"){
+      res.render('userOrdersPage');
+    }
+    else{
+      res.render('ordersPage');
+    }
+  });
+
+  app.get('/adminPanel', (req, res) => { //TODO
+    if(req.session.isAuth && req.session.type == "admin"){
+      db.getUsers().then((users) => {
+        res.render('adminPanelPage', {users: users});
+      });
+    }
+    else{
+      res.redirect('/');
+    }
+  });
+
+  app.get('/adminPanel/deleteUser/:username', (req, res) => { 
+    if(req.session.isAuth && req.session.type == "admin"){
+      db.deleteUser(req.params.username).then(() => {
+        res.redirect('/adminPanel');
+      });
+    }
+    else{
+      res.redirect('/');
+    }
   });
 
   app.listen(port, () => {
