@@ -24,10 +24,25 @@
                 <!-- ukryte menu tworzenia przedmiotow, jesli kliknie sie guzik "Dodaj nowy przedmiot", to menu sie pojawi (w javascript uzyjemy setVisible)-->
                 <!-- autogeneracja przedmiotow z bazy danych z guzikiem edytuj i usun po prawej stronie-->
             </div>
-            <div class="content" id="order">
+            <div class="content" id="order"> <!-- done -->
                 <!-- autogeneracja zamowien z bazy danych i guzikow po prawej - przejdz do nastepnego etapu (wyslane - zakonczone), drugi guzik to usuniecie zamowienia -->
+                <!-- moze tu tez zrobic podzial na dwie karty? jedna z otwartymi zamowieniami, a druga z cala reszta-->
+                <p>Kolejno: ID zamówienia, ID użytkownika, ID przedmiotu, data zamówienia, status zamówienia, przycisk do przejścia do kolejnego etapu zamówienia, przycisk usunięcia zamówienia z bazy danych</p>
+                <% orders.forEach(order => { %>
+                <div id="orderDiv">
+                    <h1 id="orderId"><%= order.id %></h1>
+                    <h2 id="orderUserId"><%= order.user_id %></h2>
+                    <h2 id="orderItemId"><%= order.item_id%></h2>
+                    <h2 id="orderDate"><%= order.date %></h2>
+                    <h2 id="orderStatus"><%= order.status %></h2>
+                    <% if(order.status != "Zakończone"){ %>
+                        <button id="orderStatusButton" onclick="changeOrderStatus('<%= order.id %>', '<%= order.status %>')">-></button>
+                    <% } %>
+                    <button id="orderDeleteButton" onclick="deleteOrder('<%= order.id %>')">Usuń</button>
+                </div>
+                <% }); %>
             </div>
-            <div class="content" id="user">
+            <div class="content" id="user"> <!-- done -->
                 <% users.forEach(user => { %>
                 <div id="userDiv">
                     <h1 id="userName"><%= user.username %></h1>
@@ -44,6 +59,29 @@
         var confirmed = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
         if(confirmed){
             window.location.href = deleteUrl;
+        }
+    }
+
+    function changeOrderStatus(orderId, orderStatus){
+        var confirmed = confirm("Czy na pewno chcesz zmienić status tego zamówienia?");
+        if(confirmed){
+            var newStatus = "";
+            if(orderStatus == "Otwarte"){
+                newStatus = "Wysłane";
+            }
+            else if(orderStatus == "Wysłane"){
+                newStatus = "Zakończone";
+            }
+            if(newStatus != ""){
+                window.location.href = "/adminPanel/changeOrderStatus/" + orderId + "/" + newStatus;
+            }
+        }
+    }
+
+    function deleteOrder(orderId){
+        var confirmed = confirm("Czy na pewno chcesz usunąć to zamówienie?");
+        if(confirmed){
+            window.location.href = "/adminPanel/deleteOrder/" + orderId;
         }
     }
 

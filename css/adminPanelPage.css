@@ -15,11 +15,6 @@ body {
   background-color: #f0f5ff;
 }
 
-h1 {
-  font-size: 48px;
-  color: #232c3d;
-}
-
 .wrapper {
   margin: auto;
   background-color: white;
@@ -55,11 +50,6 @@ button.active {
   background-color: white;
 }
 
-p {
-  text-align: left;
-  padding: 10px;
-}
-
 .content {
   display: none;
   padding: 10px 20px;
@@ -69,16 +59,22 @@ p {
   display: block;
 }
 
-#userDiv{
+#userDiv,
+#orderDiv{
   display: flex; 
   flex-direction: row; 
   justify-content: space-between; 
-  align-items: center; 
+  align-items: center;
   padding: 10px 20px; 
   border-bottom: 1px solid #d5e3ff;
 }
 
-#userName{
+#userName,
+#orderId,
+#orderUserId,
+#orderItemId,
+#orderDate,
+#orderStatus{
   font-size: 16px; 
   color: #232c3d;
 }
@@ -88,7 +84,9 @@ p {
   font-weight: bold;
 }
 
-#userDeleteButton{
+#userDeleteButton,
+#orderDeleteButton,
+#orderStatusButton{
   background-color: #d5e3ff; 
   border: none; 
   padding: 5px 10px; 
