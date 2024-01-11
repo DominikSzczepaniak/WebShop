@@ -60,7 +60,8 @@ button.active {
 }
 
 #userDiv,
-#orderDiv{
+#orderDiv,
+#itemDiv{
   display: flex; 
   flex-direction: row; 
   justify-content: space-between; 

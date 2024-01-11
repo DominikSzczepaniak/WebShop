@@ -20,7 +20,29 @@
         </div>
         <div class="contentWrapper">
             <div class="content active" id="item">
-                <button class="addItemButton" id="item">Dodaj nowy przedmiot</button>
+                <button class="addItemButton" id="item" onclick="showNewItemMenu()">Dodaj nowy przedmiot</button>
+                <div id="addItemMenu" style="display:none">
+                    <form method="POST" enctype="multipart/form-data" action="/adminPanel/addItem" id="myform">
+                        <label for="itemName">Nazwa przedmiotu:</label>
+                        <input type="text" id="itemNameForm" required><br><br>
+                        <label for="itemPrice">Cena przedmiotu:</label>
+                        <input type="float" id="itemPriceForm" required><br><br>
+                        <label for="itemDescription">Opis przedmiotu:</label>
+                        <input type="text" id="itemDescriptionForm" required><br><br>
+                        <label for="itemImage">Zdjęcie przedmiotu:</label>
+                        <input type="file" id="itemImageForm" required><br><br> 
+                        <input type="submit" value="Dodaj przedmiot">
+                    </form>
+                </div>
+                <% items.forEach(item => { %>
+                <div id="itemDiv">
+                    <h1 id="itemName"><%= item.name %></h1>
+                    <h2 id="itemPrice"><%= item.price %></h2>
+                    <h2 id="itemDescription"><%= item.description %></h2>
+                    <img id="itemImage" src="/images/<%= item.image %>">
+                    <button id="itemDeleteButton" onclick="window.location.href = '/adminPanel/deleteItem/<%= item.id %>'">Usuń</button>
+                </div>
+                <% }); %>
                 <!-- ukryte menu tworzenia przedmiotow, jesli kliknie sie guzik "Dodaj nowy przedmiot", to menu sie pojawi (w javascript uzyjemy setVisible)-->
                 <!-- autogeneracja przedmiotow z bazy danych z guzikiem edytuj i usun po prawej stronie-->
             </div>
@@ -84,6 +106,44 @@
             window.location.href = "/adminPanel/deleteOrder/" + orderId;
         }
     }
+
+    function showNewItemMenu(){
+        const menu = document.getElementById("addItemMenu");
+        if(menu.style.display == "none"){
+            menu.style.display = "block";
+        }
+        else{
+            menu.style.display = "none";
+        }
+    }
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const itemName = document.getElementById("itemNameForm").value;
+        const itemPrice = document.getElementById("itemPriceForm").value;
+        const itemDescription = document.getElementById("itemDescriptionForm").value;
+        const itemImage = document.getElementById("itemImageForm").files[0];
+        itemImage.name = itemName + ".jpg";
+        const formData = new FormData();
+        formData.append("itemName", itemName);
+        formData.append("itemPrice", itemPrice);
+        formData.append("itemDescription", itemDescription);
+        formData.append("itemImage", itemImage);
+        fetch("/adminPanel/addItem", {
+            method: "POST",
+            body: formData
+        }).then((response) => {
+            if(response.ok){
+                alert("Przedmiot został dodany!");
+                window.location.href = "/adminPanel";
+            }
+            else{
+                alert("Wystąpił błąd podczas dodawania przedmiotu!");
+            }
+        });
+    });
 
     const tabs = document.querySelector(".wrapper");
     const tabButton = document.querySelectorAll(".tab-button");

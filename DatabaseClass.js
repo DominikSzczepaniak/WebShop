@@ -78,6 +78,29 @@ class Database{
         const result = await this.client.query('DELETE FROM "Orders" WHERE id = $1', [id]);
         return result;
     }
+
+    async getNextItemId(){
+        const result = await this.client.query(`Select nextval(pg_get_serial_sequence('"Items"', 'id')) as new_id`);
+        return result.rows[0].new_id;   
+    }
+
+    async addItem(name, price, description, image){
+        const result = await this.client.query('INSERT INTO "Items"(name, price, description, image) VALUES($1, $2, $3, $4)', [name, price, description, image]);
+        return result;
+    }
+
+    async checkIfItemWithNameExists(name){
+        const result = await this.client.query('SELECT * FROM "Items" WHERE name = $1', [name]);
+        if(result.rows.length > 0)
+            return true;
+        else
+            return false;
+    }
+
+    async deleteItem(id){
+        const result = await this.client.query('DELETE FROM "Items" WHERE id = $1', [id]);
+        return result;
+    }
 }
 
 module.exports = {Database};
