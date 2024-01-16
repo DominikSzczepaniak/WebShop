@@ -43,7 +43,7 @@ async function main() {
     resave: true,
     saveUnintaialized: true
   }));
-
+  app.use(express.static('views'))
   app.get('/', (req, res) => {
     req.session.error = "";
     if(req.session.isAuth !== true){
@@ -124,18 +124,9 @@ async function main() {
 
   //TODO:
   //search bar logic (search by name or description use KMP algorithm on names and descriptions from database)
-  //add to cart (do cart on the left side as a list and checkout button at the top next to a price)
-  //so something like:
-  //cart icon         price  checkout button
-  //item1             price  remove button
-  //item2             price  remove button
-  //and so on
-  //checkout subpage
-  //adminPanel logic
   //login i rejestracja na jednej podstronie i w ladniejszym wykonaniu estetycznym (zrob zakladki na logowanie i rejestracje na tej podstronie)
   //garbage collector - przegladaj foldar images i jesli nie jest uzywanie to usun
   //zmiana bazy danych ShopUser - kluczem ma byc userName
-  //images nazwy powinny miec nazwe id_itemu.png, jesli usuwamy przedmiot to usuwamy też plik
   //przycisk ze przedmiot niedostepny
 
 

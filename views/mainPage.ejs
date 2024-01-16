@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sklep internetowy</title>
+  <script src="mainPageScript.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/mainPage.css">
+
 </head>
 
 <body>
@@ -25,7 +27,7 @@
         <strong class="cart-total-title">Łącznie</strong>
         <span class="cart-total-price">0 zł</span>
       </div>
-      <button class="btn btn-primary btn-purchase" type="button" onclick="purchaseItems()">Kup</button>
+      <button class="btn btn-primary btn-purchase" type="button"">Kup</button>
     </section>
   </div>
   <div class="ColumnShopLogin">
@@ -59,82 +61,9 @@
             <h1 class="itemName">Nazwa: <%= shopItem.name %></h1>
             <h2 class="itemPrice">Cena: <%= shopItem.price %></h2>
             <p class="itemDescription">Opis: <%= shopItem.description %></p>
-            <button class="itemAddCart" onclick="addToCart( '<%= shopItem.name%>', '<%= shopItem.price%>', '<%= shopItem.image %>')">Dodaj do koszyka</button>
+            <button class="itemAddCart" data-name="<%= shopItem.name%>" data-price="<%= shopItem.price%>" data-image="<%= shopItem.image %>">Dodaj do koszyka</button>
           </div>
     <% }); %>
   </div>
 </body>
-<script>
-  const searchBar = document.querySelector(".SearchBar");
-  const input = searchBar.querySelector("input");
-  searchBar.addEventListener("click", (e) => {
-    input.focus();
-  });
-
-  const mainPageButton = document.querySelector(".MainPage");
-  mainPageButton.addEventListener("click", (e) => {
-    window.location.href = "/";
-  });
-
-  function addToCart(name, price, image){
-    var cartRow = document.createElement('div');
-    cartRow.classList.add('cart-row')
-    var cartItems = document.getElementsByClassName('cart-items')[0];
-    var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
-    for(var i = 0; i < cartItemsNames.length; i++){
-      if(cartItemsNames[i].innerText === name){
-        alert("Ten przedmiot jest już w koszyku!");
-        return;
-      }
-    }
-    var cartRowContent = `
-        <div class="cart-item cart-column">
-            <img class="cart-item-image" src="images/${image}" width="100" height="100">
-            <span class="cart-item-title">${name}</span>
-        </div>
-        <span class="cart-price cart-column">${price}</span>
-        <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" type="number" value="1">
-            <button class="btn btn-danger" type="button">USUN</button>
-        </div>
-    `
-    cartRow.innerHTML = cartRowContent;
-    cartItems.append(cartRow);
-  }
-
-  async function purchaseItems(){
-    if('<%= isAuth %>' === 'false'){
-      alert("Musisz byc zalogowany");
-      return;
-    }
-    var cartItems = document.getElementsByClassName('cart-items')[0];
-    var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
-    var cartItemsId = [];
-    var itemAmount = cartItemsNames.length
-    for(var i = 0; i< itemAmount; i++){
-      await fetch(`/getItemIdByName/${cartItemsNames[i].innerText}`)
-              .then(response => response.json())
-              .then(data => {
-                cartItemsId.push(data.itemId);
-              })
-              .catch(error => console.error('Error:', error));
-    }
-    var cartItemsQuantity = cartItems.getElementsByClassName("cart-quantity-input");
-    var cartItemsQuantities = [];
-    for(var i = 0; i < itemAmount; i++){
-      cartItemsQuantities.push(cartItemsQuantity[i].value);
-    }
-    for(var i = 0; i < itemAmount; i++){
-      var itemId = cartItemsId[i];
-      var quantity = cartItemsQuantities[i];
-      await fetch(`placeOrder/${itemId}/${quantity}`, {
-        method: "POST"
-      }).then((response) => {
-      });
-    }
-    window.location.href = "/";
-  }
-
-</script>
-
 </html>
