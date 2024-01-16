@@ -14,7 +14,7 @@ class Database{
     async createDatabaseTables(){
         await this.client.query('CREATE TABLE IF NOT EXISTS "ShopUser"(id SERIAL PRIMARY KEY, username VARCHAR(255), password VARCHAR(255), type VARCHAR(5))');
         await this.client.query('CREATE TABLE IF NOT EXISTS "Items"(id SERIAL PRIMARY KEY, name VARCHAR(255), price VARCHAR(255), description VARCHAR(255), image VARCHAR(255))');
-        await this.client.query('CREATE TABLE IF NOT EXISTS "Orders"(id SERIAL PRIMARY KEY, user_id INTEGER, item_id INTEGER, date DATE, status VARCHAR(255), quantity INTEGER, FOREIGN KEY(user_id) REFERENCES "ShopUser"(id), FOREIGN KEY(item_id) REFERENCES "Items"(id))');
+        await this.client.query('CREATE TABLE IF NOT EXISTS "Orders"(id SERIAL PRIMARY KEY, user_id INTEGER, item_id INTEGER, date VARCHAR(255), status VARCHAR(255), quantity INTEGER, FOREIGN KEY(user_id) REFERENCES "ShopUser"(id), FOREIGN KEY(item_id) REFERENCES "Items"(id))');
         await console.log("Database tables set");
     }
 
@@ -95,6 +95,15 @@ class Database{
     async deleteItem(id){
         await this.client.query('DELETE FROM "Orders" WHERE item_id = $1', [id]);
         return await this.client.query('DELETE FROM "Items" WHERE id = $1', [id]);
+    }
+
+    async getItemIdByName(name){
+        const result = await this.client.query('SELECT id FROM "Items" WHERE name = $1', [name]);
+        return result.rows[0].id;
+    }
+
+    async placeOrder(user_id, item_id, date, status, quantity){
+        return await this.client.query('INSERT INTO "Orders"(user_id, item_id, date, status, quantity) VALUES($1, $2, $3, $4, $5)', [user_id, item_id, date, status, quantity]);
     }
 }
 

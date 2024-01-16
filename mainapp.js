@@ -46,8 +46,11 @@ async function main() {
 
   app.get('/', (req, res) => {
     req.session.error = "";
+    if(req.session.isAuth !== true){
+      req.session.isAuth = false;
+    }
     db.getShopItems().then((shopItems) => {
-      res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type });
+      res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type, getItemIdByName: db.getItemIdByName});
     })
   });
 
@@ -238,6 +241,31 @@ async function main() {
       res.redirect('/');
     }
   });
+
+  app.get('/getItemIdByName/:name', async (req, res) => {
+    const itemName = req.params.name;
+    const itemId = await db.getItemIdByName(itemName);
+    res.json({itemId: itemId});
+  });
+
+  app.post('/placeOrder/:itemId/:quantity', (req, res) => {
+    console.log(req.params.itemId, req.params.quantity);
+    const userId = req.session.userId;
+    var currentDate = new Date();
+    const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(currentDate);
+    const month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(currentDate);
+    const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(currentDate);
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const date = `${year}-${month}-${day} ${hours}:${minutes}`;
+    console.log(date)
+    const status = "Otwarte";
+    db.placeOrder(userId, req.params.itemId, date, status, req.params.quantity).then(() => {
+      res.send('200');
+    }).catch((error) => {
+      console.log(error);
+    });
+  })
 
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

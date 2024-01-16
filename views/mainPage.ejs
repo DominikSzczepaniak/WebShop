@@ -11,9 +11,22 @@
 <body>
   <div class="columnLogoShopCart">
     <button class="MainPage">Strona główna</button>
-    <h1>Koszyk</h1>
-    <button class="ShopCart">Koszyk</button>
+    <section class="container content-section">
+      <h2 class="section-header">Koszyk</h2>
+      <div class="cart-row">
+        <span class="cart-item cart-header cart-column">PRZEDMIOT</span>
+        <span class="cart-price cart-header cart-column">CENA</span>
+        <span class="cart-quantity cart-header cart-column">ILOŚĆ</span>
+      </div>
+      <div class="cart-items">
 
+      </div>
+      <div class="cart-total">
+        <strong class="cart-total-title">Łącznie</strong>
+        <span class="cart-total-price">0 zł</span>
+      </div>
+      <button class="btn btn-primary btn-purchase" type="button" onclick="purchaseItems()">Kup</button>
+    </section>
   </div>
   <div class="ColumnShopLogin">
     <div class="ToolBar">
@@ -41,12 +54,13 @@
       </div>
     </div>
     <% shopItems.forEach(shopItem => { %>
-          <div class="item" onclick="itemClicked( '<%=shopItem.id%>' )">
+          <div class="item">
             <img src="/images/<%= shopItem.image %>" class="itemPhoto">
-            <h1 class="itemName"><%= shopItem.name %></h1>
-            <h2 class="itemPrice"><%= shopItem.price %></h2>
-            <p class="itemDescription"><%= shopItem.description %></p>
-        </div>
+            <h1 class="itemName">Nazwa: <%= shopItem.name %></h1>
+            <h2 class="itemPrice">Cena: <%= shopItem.price %></h2>
+            <p class="itemDescription">Opis: <%= shopItem.description %></p>
+            <button class="itemAddCart" onclick="addToCart( '<%= shopItem.name%>', '<%= shopItem.price%>', '<%= shopItem.image %>')">Dodaj do koszyka</button>
+          </div>
     <% }); %>
   </div>
 </body>
@@ -56,13 +70,71 @@
   searchBar.addEventListener("click", (e) => {
     input.focus();
   });
-  function itemClicked(id){
-    console.log(id);
-  }
+
   const mainPageButton = document.querySelector(".MainPage");
   mainPageButton.addEventListener("click", (e) => {
     window.location.href = "/";
   });
+
+  function addToCart(name, price, image){
+    var cartRow = document.createElement('div');
+    cartRow.classList.add('cart-row')
+    var cartItems = document.getElementsByClassName('cart-items')[0];
+    var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
+    for(var i = 0; i < cartItemsNames.length; i++){
+      if(cartItemsNames[i].innerText === name){
+        alert("Ten przedmiot jest już w koszyku!");
+        return;
+      }
+    }
+    var cartRowContent = `
+        <div class="cart-item cart-column">
+            <img class="cart-item-image" src="images/${image}" width="100" height="100">
+            <span class="cart-item-title">${name}</span>
+        </div>
+        <span class="cart-price cart-column">${price}</span>
+        <div class="cart-quantity cart-column">
+            <input class="cart-quantity-input" type="number" value="1">
+            <button class="btn btn-danger" type="button">USUN</button>
+        </div>
+    `
+    cartRow.innerHTML = cartRowContent;
+    cartItems.append(cartRow);
+  }
+
+  async function purchaseItems(){
+    if('<%= isAuth %>' === 'false'){
+      alert("Musisz byc zalogowany");
+      return;
+    }
+    var cartItems = document.getElementsByClassName('cart-items')[0];
+    var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
+    var cartItemsId = [];
+    var itemAmount = cartItemsNames.length
+    for(var i = 0; i< itemAmount; i++){
+      await fetch(`/getItemIdByName/${cartItemsNames[i].innerText}`)
+              .then(response => response.json())
+              .then(data => {
+                cartItemsId.push(data.itemId);
+              })
+              .catch(error => console.error('Error:', error));
+    }
+    var cartItemsQuantity = cartItems.getElementsByClassName("cart-quantity-input");
+    var cartItemsQuantities = [];
+    for(var i = 0; i < itemAmount; i++){
+      cartItemsQuantities.push(cartItemsQuantity[i].value);
+    }
+    for(var i = 0; i < itemAmount; i++){
+      var itemId = cartItemsId[i];
+      var quantity = cartItemsQuantities[i];
+      await fetch(`placeOrder/${itemId}/${quantity}`, {
+        method: "POST"
+      }).then((response) => {
+      });
+    }
+    window.location.href = "/";
+  }
+
 </script>
 
 </html>
