@@ -45,6 +45,9 @@ class Database{
     }
 
     async deleteUser(username){
+        var user_id = await this.client.query('SELECT id FROM "ShopUser" WHERE username = $1', [username]);
+        user_id = user_id.rows[0].id;
+        await this.client.query('DELETE FROM "Orders" WHERE user_id = $1', [user_id]);
         const result = await this.client.query('DELETE FROM "ShopUser" WHERE username = $1', [username]);
         return result;
     }
@@ -98,6 +101,7 @@ class Database{
     }
 
     async deleteItem(id){
+        await this.client.query('DELETE FROM "Orders" WHERE item_id = $1', [id]);
         const result = await this.client.query('DELETE FROM "Items" WHERE id = $1', [id]);
         return result;
     }

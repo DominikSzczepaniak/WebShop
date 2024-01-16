@@ -27,6 +27,11 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+img{
+  width: 15%;
+  height: 15%;
+}
+
 button {
   letter-spacing: 3px;
   border: none;

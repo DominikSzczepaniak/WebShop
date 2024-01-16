@@ -1,35 +1,42 @@
-.columnLogoCategories{
-    width:20%;
-    float:left;
+.columnLogoCategories {
+    width: 20%;
+    float: left;
 }
-.ColumnShopLogin{
-    width:80%;
-    float:right;
+
+.ColumnShopLogin {
+    width: 80%;
+    float: right;
 }
-.MainPage{
+
+img {
+    width: 90%;
+}
+
+.MainPage {
     height: 100px;
-    width:100%;
+    width: 100%;
     background-color: #ffffff;
     font-size: 200%;
     font-weight: bold;
     text-align: center;
     display: flex;
-    cursor:pointer; 
+    cursor: pointer;
     padding: 10px 20px;
 }
-.ToolBar{
+
+.ToolBar {
     width: 100%;
     height: 100px;
 }
 
-.UserMenu{
+.UserMenu {
     width: 100%;
     height: 30px;
     font-size: 100%;
     text-align: center;
     float: right;
     border: 0.01px;
-    border-style:dotted;
+    border-style: dotted;
 }
 
 .loginButton,
@@ -37,31 +44,33 @@
 .registerButton,
 .adminButton,
 .userOrdersButton,
-.orderButton{
+.orderButton {
     width: 15%;
     text-align: center;
     cursor: pointer;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     height: 100%;
     font-size: 100%;
     color: rgb(99, 156, 13);
     border-radius: 15px;
     float: right;
 }
-.adminButton{
+
+.adminButton {
     width: 15%;
-    float:left;
+    float: left;
 }
-.userOrdersButton{
+
+.userOrdersButton {
     width: 20%;
-    float:left;
+    float: left;
 }
 
 
 
 
-.SearchBar{
-    height:40px;
+.SearchBar {
+    height: 40px;
     margin: 3px;
     width: 96%;
     background-color: #ffffff;
@@ -73,7 +82,7 @@
     align-items: center;
 }
 
-.SearchBar input{
+.SearchBar input {
     border: none;
     outline: none;
     width: 100%;
@@ -83,7 +92,7 @@
     font-size: calc(var(--font-size) * 1.2);
 }
 
-.SearchBar:hover input{
+.SearchBar:hover input {
     width: 100%;
     outline: none;
     border: none;
@@ -91,7 +100,7 @@
     transition: 0.5s ease-in-out;
 }
 
-.categoryName{
+.categoryName {
     width: 100%;
     height: 30px;
     font-size: 100%;
@@ -103,39 +112,45 @@
 }
 
 
-.item{
+.item {
     display: grid;
     width: 100%;
     height: 300px;
-    grid-template-areas: 
+    grid-template-areas:
         "image name name"
         "image price seller"
         "image description description";
-    
+
     grid-template-columns: repeat(auto-fill, 400px);
     cursor: pointer;
 }
-.itemPhoto{
+
+.itemPhoto {
     grid-area: image;
     height: 300px;
-    border:2px;
+    border: 2px;
     border-style: solid;
 }
-.itemName{
+
+.itemName {
     grid-area: name;
     font-size: 40px;
     float: left;
 }
-.itemPrice{
+
+.itemPrice {
     grid-area: price;
 }
-.itemSeller{
+
+.itemSeller {
     grid-area: seller;
 }
-.itemDescription{
+
+.itemDescription {
     grid-area: description;
 }
-.wrongPassword{
+
+.wrongPassword {
     font-size: 200%;
     font-weight: bold;
     text-align: center;

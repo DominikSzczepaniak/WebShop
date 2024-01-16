@@ -187,6 +187,12 @@ async function main() {
 
   app.get('/adminPanel/deleteItem/:id', (req, res) => {
     if (req.session.isAuth && req.session.type == "admin") {
+      fs.unlink(path.join(__dirname, 'images', req.params.id + '.png'), (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
       db.deleteItem(req.params.id).then(() => {
         res.redirect('/adminPanel');
       });
@@ -197,7 +203,6 @@ async function main() {
   });
 
   app.post('/adminPanel/addItem', upload.single('itemImage'), (req, res) => {
-    //dziala NOWAY
     if (req.session.isAuth && req.session.type == "admin") {
       const name = req.body.itemName;
       const price = req.body.itemPrice;
