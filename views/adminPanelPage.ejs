@@ -57,7 +57,7 @@
                     <h2 id="orderItemId"><%= order.item_id%></h2>
                     <h2 id="orderDate"><%= order.date %></h2>
                     <h2 id="orderStatus"><%= order.status %></h2>
-                    <% if(order.status != "Zakończone"){ %>
+                    <% if(order.status !== "Zakończone"){ %>
                         <button id="orderStatusButton" onclick="changeOrderStatus('<%= order.id %>', '<%= order.status %>')">-></button>
                     <% } %>
                     <button id="orderDeleteButton" onclick="deleteOrder('<%= order.id %>')">Usuń</button>
@@ -88,13 +88,13 @@
         var confirmed = confirm("Czy na pewno chcesz zmienić status tego zamówienia?");
         if(confirmed){
             var newStatus = "";
-            if(orderStatus == "Otwarte"){
+            if(orderStatus === "Otwarte"){
                 newStatus = "Wysłane";
             }
-            else if(orderStatus == "Wysłane"){
+            else if(orderStatus === "Wysłane"){
                 newStatus = "Zakończone";
             }
-            if(newStatus != ""){
+            if(newStatus !== ""){
                 window.location.href = "/adminPanel/changeOrderStatus/" + orderId + "/" + newStatus;
             }
         }
@@ -109,7 +109,7 @@
 
     function showNewItemMenu(){
         const menu = document.getElementById("addItemMenu");
-        if(menu.style.display == "none"){
+        if(menu.style.display === "none"){
             menu.style.display = "block";
         }
         else{

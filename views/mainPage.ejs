@@ -9,8 +9,11 @@
 </head>
 
 <body>
-  <div class="columnLogoCategories">
+  <div class="columnLogoShopCart">
     <button class="MainPage">Strona główna</button>
+    <h1>Koszyk</h1>
+    <button class="ShopCart">Koszyk</button>
+
   </div>
   <div class="ColumnShopLogin">
     <div class="ToolBar">
@@ -19,7 +22,7 @@
           <% if (typeof username != "undefined") { %>
             <button class="logoutButton" onclick="window.location.href='/logout'">Wyloguj</button>
             <button class="orderButton" onclick="window.location.href='/orders'">Zamówienia</button>
-            <%if(type == "admin"){ %>
+            <%if(type === "admin"){ %>
               <button class="adminButton" onclick="window.location.href='/adminPanel'">Panel administratora</button>
             <%} %>
           <% } else { %>
@@ -38,7 +41,7 @@
       </div>
     </div>
     <% shopItems.forEach(shopItem => { %>
-          <div class="item" onclick="itemClicked( <%=shopItem.id%> )">
+          <div class="item" onclick="itemClicked( '<%=shopItem.id%>' )">
             <img src="/images/<%= shopItem.image %>" class="itemPhoto">
             <h1 class="itemName"><%= shopItem.name %></h1>
             <h2 class="itemPrice"><%= shopItem.price %></h2>

@@ -23,8 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 async function getUsersFunction() {
-  const users = await db.getUsers();
-  return users;
+  return await db.getUsers();
 }
 
 function getId() {
@@ -138,7 +137,7 @@ async function main() {
 
 
   app.get('/adminPanel', (req, res) => { //TODO
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       db.getUsers().then((users) => {
         db.getOrders().then((orders) => {
           db.getShopItems().then((shopItems) => {
@@ -153,7 +152,7 @@ async function main() {
   });
 
   app.get('/adminPanel/deleteUser/:username', (req, res) => {
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       db.deleteUser(req.params.username).then(() => {
         res.redirect('/adminPanel');
       });
@@ -164,7 +163,7 @@ async function main() {
   });
 
   app.get('/adminPanel/changeOrderStatus/:id/:status', (req, res) => {
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       db.changeOrderStatus(req.params.id, req.params.status).then(() => {
         res.redirect('/adminPanel');
       });
@@ -175,7 +174,7 @@ async function main() {
   });
 
   app.get('/adminPanel/deleteOrder/:id', (req, res) => {
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       db.deleteOrder(req.params.id).then(() => {
         res.redirect('/adminPanel');
       });
@@ -186,7 +185,7 @@ async function main() {
   });
 
   app.get('/adminPanel/deleteItem/:id', (req, res) => {
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       fs.unlink(path.join(__dirname, 'images', req.params.id + '.png'), (err) => {
         if (err) {
           console.error(err)
@@ -203,7 +202,7 @@ async function main() {
   });
 
   app.post('/adminPanel/addItem', upload.single('itemImage'), (req, res) => {
-    if (req.session.isAuth && req.session.type == "admin") {
+    if (req.session.isAuth && req.session.type === "admin") {
       const name = req.body.itemName;
       const price = req.body.itemPrice;
       const description = req.body.itemDescription;

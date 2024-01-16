@@ -25,7 +25,7 @@ class Database{
     
     async getUserId(username, password){
         const result = await this.client.query('SELECT id, type FROM "ShopUser" WHERE username = $1 AND password = $2', [username, password]);
-        if(result.rows.length == 0)
+        if(result.rows.length === 0)
             return null;
         else
             return [result.rows[0].id, result.rows[0].type];
@@ -35,8 +35,7 @@ class Database{
         const check_exist = await this.client.query('SELECT * FROM "ShopUser" WHERE username = $1', [username]);
         if(check_exist.rows.length > 0)
             return null;
-        const result = await this.client.query('INSERT INTO "ShopUser"(username, password, type) VALUES($1, $2, $3)', [username, password, type]);
-        return result;
+        return await this.client.query('INSERT INTO "ShopUser"(username, password, type) VALUES($1, $2, $3)', [username, password, type]);
     }
 
     async getUsers(){
@@ -48,8 +47,7 @@ class Database{
         var user_id = await this.client.query('SELECT id FROM "ShopUser" WHERE username = $1', [username]);
         user_id = user_id.rows[0].id;
         await this.client.query('DELETE FROM "Orders" WHERE user_id = $1', [user_id]);
-        const result = await this.client.query('DELETE FROM "ShopUser" WHERE username = $1', [username]);
-        return result;
+        return await this.client.query('DELETE FROM "ShopUser" WHERE username = $1', [username]);
     }
 
     async getOrders(){
@@ -73,13 +71,11 @@ class Database{
     }
 
     async changeOrderStatus(id, status){
-        const result = await this.client.query('UPDATE "Orders" SET status = $1 WHERE id = $2', [status, id]);
-        return result;
+        return await this.client.query('UPDATE "Orders" SET status = $1 WHERE id = $2', [status, id]);
     }
 
     async deleteOrder(id){
-        const result = await this.client.query('DELETE FROM "Orders" WHERE id = $1', [id]);
-        return result;
+        return await this.client.query('DELETE FROM "Orders" WHERE id = $1', [id]);
     }
 
     async getNextItemId(){
@@ -88,22 +84,17 @@ class Database{
     }
 
     async addItem(name, price, description, image){
-        const result = await this.client.query('INSERT INTO "Items"(name, price, description, image) VALUES($1, $2, $3, $4)', [name, price, description, image]);
-        return result;
+        return await this.client.query('INSERT INTO "Items"(name, price, description, image) VALUES($1, $2, $3, $4)', [name, price, description, image]);
     }
 
     async checkIfItemWithNameExists(name){
         const result = await this.client.query('SELECT * FROM "Items" WHERE name = $1', [name]);
-        if(result.rows.length > 0)
-            return true;
-        else
-            return false;
+        return result.rows.length > 0;
     }
 
     async deleteItem(id){
         await this.client.query('DELETE FROM "Orders" WHERE item_id = $1', [id]);
-        const result = await this.client.query('DELETE FROM "Items" WHERE id = $1', [id]);
-        return result;
+        return await this.client.query('DELETE FROM "Items" WHERE id = $1', [id]);
     }
 }
 
