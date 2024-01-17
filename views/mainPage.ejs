@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sklep internetowy</title>
+  <script>
+    var shopItemsData = <%- JSON.stringify(shopItems)%>;
+    var isAuth = <%= isAuth%>
+  </script>
   <script src="mainPageScript.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/mainPage.css">
 
@@ -49,21 +53,15 @@
       </div>
       <div>
         <div class="SearchBar">
-          <form action="/search" method="POST">
-            <input type="text" placeholder="Szukaj...">
+          <form>
+            <input type="text" placeholder="Szukaj..." class="SearchBarInputField">
           </form>
         </div>
       </div>
     </div>
-    <% shopItems.forEach(shopItem => { %>
-          <div class="item">
-            <img src="/images/<%= shopItem.image %>" class="itemPhoto">
-            <h1 class="itemName">Nazwa: <%= shopItem.name %></h1>
-            <h2 class="itemPrice">Cena: <%= shopItem.price %></h2>
-            <p class="itemDescription">Opis: <%= shopItem.description %></p>
-            <button class="itemAddCart" data-name="<%= shopItem.name%>" data-price="<%= shopItem.price%>" data-image="<%= shopItem.image %>">Dodaj do koszyka</button>
-          </div>
-    <% }); %>
+    <div class="itemRows">
+    </div>
   </div>
+
 </body>
 </html>

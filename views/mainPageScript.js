@@ -5,13 +5,65 @@ else {
     ready()
 }
 
-
 function ready() {
+    generateAllItems();
     const searchBar = document.querySelector(".SearchBar");
     const inputSearchBar = searchBar.querySelector("input");
     searchBar.addEventListener("click", (e) => {
         inputSearchBar.focus();
     });
+    inputSearchBar.addEventListener('input', updateSearchResults);
+
+    function updateSearchResults(){
+        var text = inputSearchBar.value;
+        const itemDiv = document.getElementsByClassName("itemRows")[0];
+        let childElements = itemDiv.children;
+        while(childElements.length > 0){
+            itemDiv.removeChild(childElements[0]);
+            childElements = itemDiv.children;
+        }
+        if(text.length === 0){
+            generateAllItems();
+        }
+        else{
+            generateItems(text);
+        }
+    }
+
+    function generateAllItems(){
+        const itemRows = document.getElementsByClassName("itemRows")[0];
+        for(var i = 0; i<shopItemsData.length; i++){
+            var item = document.createElement("div");
+            item.classList.add("item")
+            item.innerHTML = createItem(shopItemsData[i].name, shopItemsData[i].price, shopItemsData[i].image, shopItemsData[i].description);
+            itemRows.append(item);
+        }
+        setUpAddToCartButtons();
+    }
+
+    function generateItems(text){
+        const itemRows = document.getElementsByClassName("itemRows")[0];
+        for(var i = 0; i<shopItemsData.length; i++){
+            if(shopItemsData[i].name.slice(0, text.length) === text){
+                var item = document.createElement("div");
+                item.classList.add("item")
+                item.innerHTML = createItem(shopItemsData[i].name, shopItemsData[i].price, shopItemsData[i].image, shopItemsData[i].description);
+                itemRows.append(item);
+            }
+        }
+        setUpAddToCartButtons();
+    }
+
+    function createItem(name, price, image, description){
+        return `
+          <img src="/images/${image}" class="itemPhoto">
+          <h1 class="itemName">Nazwa: ${name}</h1>
+          <h2 class="itemPrice">Cena: ${price}</h2>
+          <p class="itemDescription">Opis: ${description}</p>
+          <button class="itemAddCart" data-name="${name}" data-price="${price}" data-image="${image}">Dodaj do koszyka</button>
+        `
+    }
+
 
     const mainPageButton = document.querySelector(".MainPage");
     mainPageButton.addEventListener("click", (e) => {
@@ -34,22 +86,24 @@ function ready() {
         }
     }
 
+    function setUpAddToCartButtons(){
+        const addToCartButtons = document.getElementsByClassName("itemAddCart");
+        for(var i = 0; i < addToCartButtons.length; i++){
+            var addButton = addToCartButtons[i];
+            var nameItem = addButton.dataset.name;
+            var priceItem = addButton.dataset.price;
+            var imageItem = addButton.dataset.image;
+            addButton.addEventListener("click", addToCartClicked);
+        }
+    }
+
     function setUpButtons(){
         setUpRemoveButtons();
         setupQuantityButtons();
+        setUpAddToCartButtons();
     }
 
 
-
-    const addToCartButtons = document.getElementsByClassName("itemAddCart");
-    for(var i = 0; i < addToCartButtons.length; i++){
-        var addButton = addToCartButtons[i];
-        var nameItem = addButton.dataset.name;
-        var priceItem = addButton.dataset.price;
-        var imageItem = addButton.dataset.image;
-        addButton.addEventListener("click", addToCartClicked);
-
-    }
 
     const purchaseButton = document.getElementsByClassName("btn-purchase")[0];
     purchaseButton.addEventListener('click', purchaseItems);
@@ -64,7 +118,6 @@ function ready() {
         setUpButtons();
     }
 
-
     function removeCartItem(event) {
         var buttonClicked = event.target;
         buttonClicked.parentElement.parentElement.remove();
@@ -78,7 +131,6 @@ function ready() {
         }
         updateCartTotal();
     }
-
 
     function updateCartTotal() {
         var totalPriceElement = document.getElementsByClassName('cart-total-price')[0];
@@ -124,7 +176,7 @@ function ready() {
     }
 
     async function purchaseItems() {
-        if ('<%= isAuth %>' === 'false') {
+        if (isAuth === false) {
             alert("Musisz byc zalogowany");
             return;
         }

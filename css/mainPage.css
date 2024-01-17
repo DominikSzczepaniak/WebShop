@@ -66,9 +66,6 @@ img {
     float: left;
 }
 
-
-
-
 .SearchBar {
     height: 40px;
     margin: 3px;
@@ -122,13 +119,22 @@ img {
         "image description description cartbutton";
 
     grid-template-columns: repeat(auto-fill, 400px);
-    cursor: pointer;
+    border: 2px dotted;
+    position: relative;
 }
 
 .itemAddCart{
     grid-area: cartbutton;
-    height: 200px;
-    border: 2px solid;
+    width: 150px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+    border: none;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 50px;
+    font-size: 2em;
+    cursor: pointer;
 }
 
 .itemPhoto {
@@ -138,22 +144,26 @@ img {
 }
 
 .itemName {
+    max-width: 100%;
     grid-area: name;
     font-size: 40px;
-    float: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .itemPrice {
     grid-area: price;
 }
 
-.itemSeller {
-    grid-area: seller;
-}
-
 .itemDescription {
     grid-area: description;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 80%;
 }
+
 
 .wrongPassword {
     font-size: 200%;

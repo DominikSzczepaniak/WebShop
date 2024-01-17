@@ -22,16 +22,6 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage });
 
-async function getUsersFunction() {
-  return await db.getUsers();
-}
-
-function getId() {
-  db.getNextItemId().then((new_id) => {
-    return new_id;
-  });
-}
-
 async function main() {
   await db.createDatabaseTables();
   app.set('view engine', 'ejs');
@@ -123,11 +113,11 @@ async function main() {
   });
 
   //TODO:
-  //search bar logic (search by name or description use KMP algorithm on names and descriptions from database)
   //login i rejestracja na jednej podstronie i w ladniejszym wykonaniu estetycznym (zrob zakladki na logowanie i rejestracje na tej podstronie)
   //garbage collector - przegladaj foldar images i jesli nie jest uzywanie to usun
-  //zmiana bazy danych ShopUser - kluczem ma byc userName
-  //przycisk ze przedmiot niedostepny
+  //zmien css na lepsze w calym projekcie a glownie przycisk kupna przedmiotu
+  //nie dziala zamawianie wielu przedmiotow
+  //jest jakis problem z images przy usuwaniu przedmiotow
 
 
   app.get('/adminPanel', (req, res) => { //TODO
@@ -240,7 +230,6 @@ async function main() {
   });
 
   app.post('/placeOrder/:itemId/:quantity', (req, res) => {
-    console.log(req.params.itemId, req.params.quantity);
     const userId = req.session.userId;
     var currentDate = new Date();
     const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(currentDate);
@@ -249,13 +238,20 @@ async function main() {
     const hours = currentDate.getHours().toString().padStart(2, '0');
     const minutes = currentDate.getMinutes().toString().padStart(2, '0');
     const date = `${year}-${month}-${day} ${hours}:${minutes}`;
-    console.log(date)
     const status = "Otwarte";
     db.placeOrder(userId, req.params.itemId, date, status, req.params.quantity).then(() => {
       res.send('200');
     }).catch((error) => {
       console.log(error);
     });
+  });
+
+  app.get('/orders', async (req, res) => {
+    if(req.session.isAuth === false){
+      res.redirect('/');
+    }
+    await db.getOrdersByUserId(req.session.userId);
+    res.render('ordersPage.ejs');
   })
 
   app.listen(port, () => {
