@@ -1,0 +1,12 @@
+.MainPage {
+    height: 100px;
+    width: 100%;
+    background-color: #ffffff;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+

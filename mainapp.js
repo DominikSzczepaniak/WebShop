@@ -40,7 +40,7 @@ async function main() {
       req.session.isAuth = false;
     }
     db.getShopItems().then((shopItems) => {
-      res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type, getItemIdByName: db.getItemIdByName});
+      res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type});
     })
   });
 
@@ -111,14 +111,6 @@ async function main() {
     req.session.destroy();
     res.redirect('/');
   });
-
-  //TODO:
-  //login i rejestracja na jednej podstronie i w ladniejszym wykonaniu estetycznym (zrob zakladki na logowanie i rejestracje na tej podstronie)
-  //garbage collector - przegladaj foldar images i jesli nie jest uzywanie to usun
-  //zmien css na lepsze w calym projekcie a glownie przycisk kupna przedmiotu
-  //nie dziala zamawianie wielu przedmiotow
-  //jest jakis problem z images przy usuwaniu przedmiotow
-
 
   app.get('/adminPanel', (req, res) => { //TODO
     if (req.session.isAuth && req.session.type === "admin") {
@@ -247,7 +239,7 @@ async function main() {
   });
 
   app.get('/orders', async (req, res) => {
-    if(req.session.isAuth === false){
+    if(req.session.isAuth === false || req.session.isAuth === undefined){
       res.redirect('/');
     }
     var orders = await db.getOrdersByUserId(req.session.userId);
