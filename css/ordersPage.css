@@ -1,0 +1,54 @@
+.MainPage {
+    height: 100px;
+    width: 100%;
+    background-color: #ffffff;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.orderRow{
+    display: grid;
+    width: 100%;
+    height: 300px;
+    grid-template-areas:
+        "image name date date"
+        "image price status quantity"
+        "image nothing nothing nothing";
+    grid-template-columns: repeat(auto-fill, 400px);
+
+}
+
+.orderImage{
+    height: 100%;
+    border: 2px solid;
+    grid-area: image;
+}
+
+.orderItemName{
+    width: 20%;
+    grid-area: name;
+}
+
+.orderItemPrice{
+    width: 10%;
+    grid-area: price;
+}
+
+.orderDate{
+    width: 20%;
+    grid-area: date;
+}
+
+.orderStatus{
+    width: 10%;
+    grid-area: status;
+}
+
+.orderQuantity{
+    width: 5%;
+    grid-area: quantity;
+}

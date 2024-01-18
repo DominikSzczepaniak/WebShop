@@ -250,8 +250,9 @@ async function main() {
     if(req.session.isAuth === false){
       res.redirect('/');
     }
-    await db.getOrdersByUserId(req.session.userId);
-    res.render('ordersPage.ejs');
+    var orders = await db.getOrdersByUserId(req.session.userId);
+    var items = await db.getShopItems();
+    res.render('ordersPage.ejs', {orders: orders, shopItems: items});
   })
 
   app.listen(port, () => {
