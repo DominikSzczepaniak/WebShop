@@ -60,16 +60,6 @@ class Database{
         return result.rows;
     }
 
-    async getOrdersByItemId(item_id){
-        const result = await this.client.query('SELECT * FROM "Orders" WHERE item_id = $1', [item_id]);
-        return result.rows;
-    }
-
-    async getOrdersByStatus(status){
-        const result = await this.client.query('SELECT * FROM "Orders" WHERE status = $1', [status]);
-        return result.rows;
-    }
-
     async changeOrderStatus(id, status){
         return await this.client.query('UPDATE "Orders" SET status = $1 WHERE id = $2', [status, id]);
     }

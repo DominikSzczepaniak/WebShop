@@ -185,7 +185,10 @@ async function main() {
       db.checkIfItemWithNameExists(name).then((result) => {
         fileExists = result;
         if (fileExists) {
-          // usun za pomoca fs plik tempfile.png z folderu images
+          // It has to be changed if there are to be more than one admin of the shop or users can post their own items.
+          // Why? Imagine a scenario where two users add item at the exact same time, then the two files would be named tempfile.png
+          // That would lead to one offer having no image. Of course its not a problem when there is only one person that can create offers.
+          // How to change that? Just create a queue for creating new offers.
           fs.unlink(path.join(__dirname, 'images', 'tempfile.png'), (err) => {
             if (err) {
               console.error(err)
@@ -196,7 +199,6 @@ async function main() {
         }
         else {
           db.getNextItemId().then((new_id) => {
-            //rename tempfile.png to new_id.png
             fs.rename(path.join(__dirname, 'images', 'tempfile.png'), path.join(__dirname, 'images', new_id + '.png'), (err) => {
               if (err) {
                 console.error(err)

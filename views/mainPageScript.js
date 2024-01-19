@@ -9,13 +9,13 @@ function ready() {
     generateAllItems();
     const searchBar = document.querySelector(".SearchBar");
     const inputSearchBar = searchBar.querySelector("input");
-    searchBar.addEventListener("click", (e) => {
+    searchBar.addEventListener("click", () => {
         inputSearchBar.focus();
     });
     inputSearchBar.addEventListener('input', updateSearchResults);
 
     function updateSearchResults(){
-        var text = inputSearchBar.value;
+        const text = inputSearchBar.value;
         const itemDiv = document.getElementsByClassName("itemRows")[0];
         let childElements = itemDiv.children;
         while(childElements.length > 0){
@@ -32,8 +32,8 @@ function ready() {
 
     function generateAllItems(){
         const itemRows = document.getElementsByClassName("itemRows")[0];
-        for(var i = 0; i<shopItemsData.length; i++){
-            var item = document.createElement("div");
+        for(let i = 0; i<shopItemsData.length; i++){
+            const item = document.createElement("div");
             item.classList.add("item")
             item.innerHTML = createItem(shopItemsData[i].name, shopItemsData[i].price, shopItemsData[i].image, shopItemsData[i].description);
             itemRows.append(item);
@@ -43,9 +43,9 @@ function ready() {
 
     function generateItems(text){
         const itemRows = document.getElementsByClassName("itemRows")[0];
-        for(var i = 0; i<shopItemsData.length; i++){
+        for(let i = 0; i<shopItemsData.length; i++){
             if(shopItemsData[i].name.slice(0, text.length) === text){
-                var item = document.createElement("div");
+                const item = document.createElement("div");
                 item.classList.add("item")
                 item.innerHTML = createItem(shopItemsData[i].name, shopItemsData[i].price, shopItemsData[i].image, shopItemsData[i].description);
                 itemRows.append(item);
@@ -56,7 +56,7 @@ function ready() {
 
     function createItem(name, price, image, description){
         return `
-          <img src="/images/${image}" class="itemPhoto">
+          <img src="/images/${image}" class="itemPhoto" alt="">
           <h1 class="itemName">Nazwa: ${name}</h1>
           <h2 class="itemPrice">Cena: ${price}</h2>
           <p class="itemDescription">Opis: ${description}</p>
@@ -66,33 +66,30 @@ function ready() {
 
 
     const mainPageButton = document.querySelector(".MainPage");
-    mainPageButton.addEventListener("click", (e) => {
+    mainPageButton.addEventListener("click", () => {
         window.location.href = "/";
     });
 
     function setUpRemoveButtons(){
         const removeButtons = document.getElementsByClassName("btn-danger");
-        for (var i = 0; i < removeButtons.length; i++) {
-            var removeButton = removeButtons[i];
+        for (let i = 0; i < removeButtons.length; i++) {
+            const removeButton = removeButtons[i];
             removeButton.addEventListener('click', removeCartItem);
         }
     }
 
     function setupQuantityButtons(){
         const increaseQuantityButton = document.getElementsByClassName("cart-quantity-input");
-        for (var i = 0; i < increaseQuantityButton.length; i++) {
-            var input = increaseQuantityButton[i];
+        for (let i = 0; i < increaseQuantityButton.length; i++) {
+            const input = increaseQuantityButton[i];
             input.addEventListener('change', quantityChanged);
         }
     }
 
     function setUpAddToCartButtons(){
         const addToCartButtons = document.getElementsByClassName("itemAddCart");
-        for(var i = 0; i < addToCartButtons.length; i++){
-            var addButton = addToCartButtons[i];
-            var nameItem = addButton.dataset.name;
-            var priceItem = addButton.dataset.price;
-            var imageItem = addButton.dataset.image;
+        for(let i = 0; i < addToCartButtons.length; i++){
+            const addButton = addToCartButtons[i];
             addButton.addEventListener("click", addToCartClicked);
         }
     }
@@ -109,23 +106,23 @@ function ready() {
     purchaseButton.addEventListener('click', purchaseItems);
 
     function addToCartClicked(event){
-        var addButton = event.target;
-        var nameItem = addButton.dataset.name;
-        var priceItem = addButton.dataset.price;
-        var imageItem = addButton.dataset.image;
+        const addButton = event.target;
+        const nameItem = addButton.dataset.name;
+        const priceItem = addButton.dataset.price;
+        const imageItem = addButton.dataset.image;
         addToCart(nameItem, priceItem, imageItem);
         updateCartTotal();
         setUpButtons();
     }
 
     function removeCartItem(event) {
-        var buttonClicked = event.target;
+        const buttonClicked = event.target;
         buttonClicked.parentElement.parentElement.remove();
         updateCartTotal();
     }
 
     function quantityChanged(event) {
-        var input = event.target;
+        const input = event.target;
         if (isNaN(input.value) || input.value <= 0) {
             input.value = 1;
         }
@@ -133,16 +130,16 @@ function ready() {
     }
 
     function updateCartTotal() {
-        var totalPriceElement = document.getElementsByClassName('cart-total-price')[0];
-        var cartItems = document.getElementsByClassName("cart-items")[0];
-        var cartRows = cartItems.getElementsByClassName("cart-row")
-        var totalPrice = 0;
-        for (var i = 0; i < cartRows.length; i++) {
-            var cartRow = cartRows[i];
-            var priceElement = cartRow.getElementsByClassName("cart-price")[0];
-            var quantityElement = cartRow.getElementsByClassName("cart-quantity-input")[0];
-            var price = parseFloat(priceElement.innerText);
-            var quantity = quantityElement.value;
+        const totalPriceElement = document.getElementsByClassName('cart-total-price')[0];
+        const cartItems = document.getElementsByClassName("cart-items")[0];
+        const cartRows = cartItems.getElementsByClassName("cart-row");
+        let totalPrice = 0;
+        for (let i = 0; i < cartRows.length; i++) {
+            const cartRow = cartRows[i];
+            const priceElement = cartRow.getElementsByClassName("cart-price")[0];
+            const quantityElement = cartRow.getElementsByClassName("cart-quantity-input")[0];
+            const price = parseFloat(priceElement.innerText);
+            const quantity = quantityElement.value;
             totalPrice += (price * quantity);
         }
         totalPrice = Math.round(totalPrice * 100) / 100;
@@ -150,19 +147,19 @@ function ready() {
     }
 
     function addToCart(name, price, image) {
-        var cartRow = document.createElement('div');
+        const cartRow = document.createElement('div');
         cartRow.classList.add('cart-row')
-        var cartItems = document.getElementsByClassName('cart-items')[0];
-        var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
-        for (var i = 0; i < cartItemsNames.length; i++) {
+        const cartItems = document.getElementsByClassName('cart-items')[0];
+        const cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
+        for (let i = 0; i < cartItemsNames.length; i++) {
             if (cartItemsNames[i].innerText === name) {
                 alert("Ten przedmiot jest już w koszyku!");
                 return;
             }
         }
-        var cartRowContent = `
+        cartRow.innerHTML = `
             <div class="cart-item cart-column">
-                <img class="cart-item-image" src="images/${image}" width="100" height="100">
+                <img class="cart-item-image" src="images/${image}" width="100" height="100" alt="">
                 <span class="cart-item-title">${name}</span>
             </div>
             <span class="cart-price cart-column">${price}</span>
@@ -170,8 +167,7 @@ function ready() {
                 <input class="cart-quantity-input" type="number" value="1">
                 <button class="btn btn-danger" type="button">USUN</button>
             </div>
-        `
-        cartRow.innerHTML = cartRowContent;
+        `;
         cartItems.append(cartRow);
     }
 
@@ -180,11 +176,11 @@ function ready() {
             alert("Musisz byc zalogowany");
             return;
         }
-        var cartItems = document.getElementsByClassName('cart-items')[0];
-        var cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
-        var cartItemsId = [];
-        var itemAmount = cartItemsNames.length
-        for (var i = 0; i < itemAmount; i++) {
+        const cartItems = document.getElementsByClassName('cart-items')[0];
+        const cartItemsNames = cartItems.getElementsByClassName("cart-item-title");
+        const cartItemsId = [];
+        const itemAmount = cartItemsNames.length;
+        for (let i = 0; i < itemAmount; i++) {
             await fetch(`/getItemIdByName/${cartItemsNames[i].innerText}`)
                 .then(response => response.json())
                 .then(data => {
@@ -192,17 +188,17 @@ function ready() {
                 })
                 .catch(error => console.error('Error:', error));
         }
-        var cartItemsQuantity = cartItems.getElementsByClassName("cart-quantity-input");
-        var cartItemsQuantities = [];
-        for (var i = 0; i < itemAmount; i++) {
+        const cartItemsQuantity = cartItems.getElementsByClassName("cart-quantity-input");
+        const cartItemsQuantities = [];
+        for (let i = 0; i < itemAmount; i++) {
             cartItemsQuantities.push(cartItemsQuantity[i].value);
         }
-        for (var i = 0; i < itemAmount; i++) {
-            var itemId = cartItemsId[i];
-            var quantity = cartItemsQuantities[i];
+        for (let i = 0; i < itemAmount; i++) {
+            const itemId = cartItemsId[i];
+            const quantity = cartItemsQuantities[i];
             await fetch(`placeOrder/${itemId}/${quantity}`, {
                 method: "POST"
-            }).then((response) => {
+            }).then(() => {
             });
         }
         window.location.href = "/";
