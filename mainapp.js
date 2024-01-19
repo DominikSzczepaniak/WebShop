@@ -4,9 +4,7 @@ const session = require('express-session');
 
 const app = express();
 const port = 3000;
-const { ShopItem } = require('./ShopItemClass');
 const { Database } = require('./DatabaseClass');
-const { exec } = require('child_process');
 const db = new Database();
 const multer = require('multer');
 const path = require('path');
@@ -165,7 +163,7 @@ async function main() {
       fs.unlink(path.join(__dirname, 'images', req.params.id + '.png'), (err) => {
         if (err) {
           console.error(err)
-          return
+
         }
       })
       db.deleteItem(req.params.id).then(() => {
@@ -192,7 +190,7 @@ async function main() {
           fs.unlink(path.join(__dirname, 'images', 'tempfile.png'), (err) => {
             if (err) {
               console.error(err)
-              return
+
             }
           })
           res.redirect('/adminPanel');
@@ -202,14 +200,14 @@ async function main() {
             fs.rename(path.join(__dirname, 'images', 'tempfile.png'), path.join(__dirname, 'images', new_id + '.png'), (err) => {
               if (err) {
                 console.error(err)
-                return
+
               }
             });
             db.addItem(name, price, description, new_id + ".png").then(() => {
               res.redirect('/adminPanel');
             });
           });
-        };
+        }
       });
     }
     else {
@@ -253,7 +251,7 @@ async function main() {
     console.log(`Server running at http://localhost:${port}`);
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     console.error(err.stack);
     res.status(500).send('Coś poszło nie tak!');
   });

@@ -14,7 +14,7 @@ function ready(){
         itemsDict[itemsData[item].id] = itemsData[item];
     }
 
-    function ordersGenerate(userId){
+    function ordersGenerate(){
         for(var orderNumerator in ordersData){
             var order = ordersData[orderNumerator];
             var orderRow = document.createElement("div");
@@ -33,7 +33,7 @@ function ready(){
 
     function createOrderHTML(name, price, image, date, status, quantity){
         return `
-            <img src="/images/${image}" class="orderImage">
+            <img src="/images/${image}" class="orderImage" alt="">
             <h1 class="orderItemName">Nazwa: ${name}</h1>
             <h2 class="orderItemPrice">Cena: ${price}</h2>
             <h2 class="orderDate">Data: ${date}</h2>
