@@ -32,14 +32,13 @@ async function main() {
     saveUnintaialized: true
   }));
   app.use(express.static('views'))
-  app.get('/', (req, res) => {
+  app.get('/', async (req, res) => {
     req.session.error = "";
     if(req.session.isAuth !== true){
       req.session.isAuth = false;
     }
-    db.getShopItems().then((shopItems) => {
-      res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type});
-    })
+    var shopItems = await db.getShopItems();
+    res.render('mainPage', { shopItems: shopItems, isAuth: req.session.isAuth, userId: req.session.userId, username: req.session.username, type: req.session.type});
   });
 
   app.get('/login', (req, res) => {
@@ -110,15 +109,12 @@ async function main() {
     res.redirect('/');
   });
 
-  app.get('/adminPanel', (req, res) => { //TODO
+  app.get('/adminPanel', async (req, res) => {
     if (req.session.isAuth && req.session.type === "admin") {
-      db.getUsers().then((users) => {
-        db.getOrders().then((orders) => {
-          db.getShopItems().then((shopItems) => {
-            res.render('adminPanelPage', { users: users, orders: orders, items: shopItems });
-          });
-        });
-      });
+      var users = await db.getUsers();
+      var orders = await db.getOrders();
+      var shopItems = await db.getShopItems();
+      res.render('adminPanelPage', { users: users, orders: orders, items: shopItems });
     }
     else {
       res.redirect('/');
@@ -163,7 +159,6 @@ async function main() {
       fs.unlink(path.join(__dirname, 'images', req.params.id + '.png'), (err) => {
         if (err) {
           console.error(err)
-
         }
       })
       db.deleteItem(req.params.id).then(() => {
@@ -200,7 +195,6 @@ async function main() {
             fs.rename(path.join(__dirname, 'images', 'tempfile.png'), path.join(__dirname, 'images', new_id + '.png'), (err) => {
               if (err) {
                 console.error(err)
-
               }
             });
             db.addItem(name, price, description, new_id + ".png").then(() => {
