@@ -1,0 +1,2 @@
+This is the final project i've done for course Wybrane Elementy Praktyki Projektowania Oprogramowania. To run it you need a POSTGRES database with created database of name "projektweppo" and user "projekt" with password "projekt" or you can create your own name, user and password and change constructor in DatabaseClass.js.
+To access website just run mainapp.js and hop on localhost:3000.
